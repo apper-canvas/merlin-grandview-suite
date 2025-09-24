@@ -32,13 +32,12 @@ function Layout({ children }) {
               </div>
               <div className="ml-2">
                 <h1 className="text-lg font-bold gradient-text">Grandview Suite</h1>
+<div className="ml-2">
+                <h1 className="text-lg font-bold gradient-text">Grandview Suite</h1>
               </div>
             </div>
-</div>
           </div>
-          
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="p-2">
+        </div>
               <ApperIcon name="Bell" className="h-5 w-5" />
             </Button>
             

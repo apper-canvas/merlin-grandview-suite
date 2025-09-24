@@ -7,6 +7,8 @@ import RoomDetailsModal from "@/components/molecules/RoomDetailsModal";
 import Loading from "@/components/ui/Loading";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
+import Dashboard from "@/components/pages/Dashboard";
+import Maintenance from "@/components/pages/Maintenance";
 const Rooms = () => {
 const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -640,8 +642,8 @@ const filteredRooms = rooms.filter(room => {
                           }`}
                         >
                           {status}
-</button>
-))}
+                        </button>
+                      ))}
                     </div>
                   )}
                   
