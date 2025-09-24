@@ -654,7 +654,8 @@ const filteredRooms = rooms.filter(room => {
                     }
                   </p>
                 </div>
-              ))}
+))}
+            </div>
           </CardContent>
         </Card>
       ))}

@@ -32,29 +32,24 @@ function Layout({ children }) {
               </div>
               <div className="ml-2">
                 <h1 className="text-lg font-bold gradient-text">Grandview Suite</h1>
-<div className="ml-2">
-                <h1 className="text-lg font-bold gradient-text">Grandview Suite</h1>
+<h1 className="text-lg font-bold gradient-text">Grandview Suite</h1>
               </div>
             </div>
           </div>
-        </div>
-              <ApperIcon name="Bell" className="h-5 w-5" />
+          
+          <div className="flex items-center space-x-2">
+            <span className="text-sm font-medium text-slate-700">
+              {user?.firstName} {user?.lastName}
+            </span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={logout}
+              className="text-slate-600 hover:text-slate-900"
+            >
+              <ApperIcon name="LogOut" className="h-4 w-4 mr-1" />
+              Logout
             </Button>
-            
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium text-slate-700">
-                {user?.firstName} {user?.lastName}
-              </span>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={logout}
-                className="text-slate-600 hover:text-slate-900"
-              >
-                <ApperIcon name="LogOut" className="h-4 w-4 mr-1" />
-                Logout
-              </Button>
-            </div>
           </div>
         </div>
       </div>
