@@ -1,382 +1,362 @@
-import mockRooms from "@/services/mockData/rooms.json";
-
 class RoomService {
   constructor() {
-    this.rooms = [...mockRooms];
+    const { ApperClient } = window.ApperSDK;
+    this.apperClient = new ApperClient({
+      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+    });
   }
 
   async getAll() {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-    return this.rooms.map(room => ({ ...room }));
+    try {
+      const response = await this.apperClient.fetchRecords('room_c', {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "room_number_c"}},
+          {"field": {"Name": "floor_c"}},
+          {"field": {"Name": "room_type_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "nightly_rate_c"}},
+          {"field": {"Name": "guest_name_c"}},
+          {"field": {"Name": "checkin_time_c"}},
+          {"field": {"Name": "checkout_time_c"}},
+          {"field": {"Name": "blocked_c"}},
+          {"field": {"Name": "block_reason_c"}},
+          {"field": {"Name": "last_updated_c"}},
+          {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "status_history_c"}}
+        ],
+        orderBy: [{"fieldName": "room_number_c", "sorttype": "ASC"}]
+      });
+
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      return response.data?.map(room => ({
+        Id: room.Id,
+        roomNumber: room.room_number_c,
+        floor: room.floor_c,
+        roomType: room.room_type_c,
+        status: room.status_c,
+        nightlyRate: room.nightly_rate_c,
+        guestName: room.guest_name_c,
+        checkinTime: room.checkin_time_c,
+        checkoutTime: room.checkout_time_c,
+        blocked: room.blocked_c,
+        blockReason: room.block_reason_c,
+        lastUpdated: room.last_updated_c,
+        notes: room.notes_c ? JSON.parse(room.notes_c) : [],
+        statusHistory: room.status_history_c ? JSON.parse(room.status_history_c) : []
+      })) || [];
+    } catch (error) {
+      console.error('Failed to fetch rooms:', error);
+      return [];
+    }
   }
 
   async getById(id) {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    const room = this.rooms.find(r => r.Id === parseInt(id));
-    if (!room) {
+    try {
+      const response = await this.apperClient.getRecordById('room_c', id, {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "room_number_c"}},
+          {"field": {"Name": "floor_c"}},
+          {"field": {"Name": "room_type_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "nightly_rate_c"}},
+          {"field": {"Name": "guest_name_c"}},
+          {"field": {"Name": "checkin_time_c"}},
+          {"field": {"Name": "checkout_time_c"}},
+          {"field": {"Name": "blocked_c"}},
+          {"field": {"Name": "block_reason_c"}},
+          {"field": {"Name": "last_updated_c"}},
+          {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "status_history_c"}}
+        ]
+      });
+
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      const room = response.data;
+      return {
+        Id: room.Id,
+        roomNumber: room.room_number_c,
+        floor: room.floor_c,
+        roomType: room.room_type_c,
+        status: room.status_c,
+        nightlyRate: room.nightly_rate_c,
+        guestName: room.guest_name_c,
+        checkinTime: room.checkin_time_c,
+        checkoutTime: room.checkout_time_c,
+        blocked: room.blocked_c,
+        blockReason: room.block_reason_c,
+        lastUpdated: room.last_updated_c,
+        notes: room.notes_c ? JSON.parse(room.notes_c) : [],
+        statusHistory: room.status_history_c ? JSON.parse(room.status_history_c) : []
+      };
+    } catch (error) {
+      console.error(`Failed to fetch room ${id}:`, error);
       throw new Error(`Room with ID ${id} not found`);
     }
-    return { ...room };
-  }
-
-  async getByFloor(floor) {
-    await new Promise(resolve => setTimeout(resolve, 400));
-    return this.rooms
-      .filter(room => room.floor === parseInt(floor))
-      .map(room => ({ ...room }));
-  }
-
-  async getByStatus(status) {
-    await new Promise(resolve => setTimeout(resolve, 400));
-    return this.rooms
-      .filter(room => room.status === status)
-      .map(room => ({ ...room }));
   }
 
   async updateStatus(id, newStatus) {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(id));
-    if (roomIndex === -1) {
-      throw new Error(`Room with ID ${id} not found`);
-    }
+    try {
+      const response = await this.apperClient.updateRecord('room_c', {
+        records: [{
+          Id: parseInt(id),
+          status_c: newStatus,
+          last_updated_c: new Date().toISOString(),
+          guest_name_c: newStatus === 'Available' ? '' : undefined,
+          checkin_time_c: newStatus === 'Available' ? null : undefined,
+          checkout_time_c: newStatus === 'Available' ? null : undefined
+        }]
+      });
 
-    const room = this.rooms[roomIndex];
-    const oldStatus = room.status;
-    
-    // Update room status and timestamp
-    this.rooms[roomIndex] = {
-      ...room,
-      status: newStatus,
-      lastUpdated: new Date().toISOString(),
-      statusHistory: [
-        ...room.statusHistory,
-        {
-          status: newStatus,
-          timestamp: new Date().toISOString(),
-          changedFrom: oldStatus,
-          changedBy: 'Current User'
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} rooms:`, failed);
+          failed.forEach(record => {
+            if (record.message) console.error(record.message);
+          });
         }
-      ]
-    };
-
-    // Clear guest info if room becomes available
-    if (newStatus === 'Available') {
-      this.rooms[roomIndex].guestName = null;
-      this.rooms[roomIndex].checkoutTime = null;
-      this.rooms[roomIndex].checkinTime = null;
+        
+        if (successful.length > 0) {
+          return successful[0].data;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to update room status:', error);
+      throw error;
     }
-
-    return { ...this.rooms[roomIndex] };
-}
-
-  async markCleaningComplete(id) {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(id));
-    if (roomIndex === -1) {
-      throw new Error(`Room with ID ${id} not found`);
-    }
-
-    return this.updateStatus(id, 'Available');
-  }
-
-  async updateRoom(id, updateData) {
-    await new Promise(resolve => setTimeout(resolve, 600));
-    
-    const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(id));
-    if (roomIndex === -1) {
-      throw new Error(`Room with ID ${id} not found`);
-    }
-
-    this.rooms[roomIndex] = {
-      ...this.rooms[roomIndex],
-      ...updateData,
-      Id: parseInt(id), // Ensure ID doesn't change
-      lastUpdated: new Date().toISOString()
-    };
-
-    return { ...this.rooms[roomIndex] };
-  }
-
-  async getRoomStats() {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    const stats = this.rooms.reduce((acc, room) => {
-      acc[room.status] = (acc[room.status] || 0) + 1;
-      return acc;
-    }, {});
-
-    const totalRooms = this.rooms.length;
-    const occupancyRate = ((stats.Occupied || 0) / totalRooms * 100).toFixed(1);
-    
-    return {
-      total: totalRooms,
-      available: stats.Available || 0,
-      occupied: stats.Occupied || 0,
-      maintenance: stats.Maintenance || 0,
-      cleaning: stats.Cleaning || 0,
-      occupancyRate: parseFloat(occupancyRate)
-    };
   }
 
   async assignGuest(roomId, guestData) {
-    await new Promise(resolve => setTimeout(resolve, 600));
-    
-    const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(roomId));
-    if (roomIndex === -1) {
-      throw new Error(`Room with ID ${roomId} not found`);
-    }
+    try {
+      const response = await this.apperClient.updateRecord('room_c', {
+        records: [{
+          Id: parseInt(roomId),
+          status_c: 'Occupied',
+          guest_name_c: guestData.guestName,
+          checkin_time_c: guestData.checkinTime || new Date().toISOString(),
+          checkout_time_c: guestData.checkoutTime,
+          last_updated_c: new Date().toISOString()
+        }]
+      });
 
-    const room = this.rooms[roomIndex];
-    if (room.status !== 'Available') {
-      throw new Error(`Room ${room.roomNumber} is not available for assignment`);
-    }
+      if (!response.success) {
+        throw new Error(response.message);
+      }
 
-    this.rooms[roomIndex] = {
-      ...room,
-      status: 'Occupied',
-      guestName: guestData.guestName,
-      checkinTime: guestData.checkinTime || new Date().toISOString(),
-      checkoutTime: guestData.checkoutTime,
-      lastUpdated: new Date().toISOString(),
-      statusHistory: [
-        ...room.statusHistory,
-        {
-          status: 'Occupied',
-          timestamp: new Date().toISOString(),
-          changedFrom: 'Available',
-          changedBy: 'Current User',
-          guestName: guestData.guestName
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        if (successful.length > 0) {
+          return successful[0].data;
         }
-      ]
-    };
-
-    return { ...this.rooms[roomIndex] };
+      }
+    } catch (error) {
+      console.error('Failed to assign guest:', error);
+      throw error;
+    }
   }
 
   async checkoutGuest(roomId) {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(roomId));
-    if (roomIndex === -1) {
-      throw new Error(`Room with ID ${roomId} not found`);
-    }
+    try {
+      const response = await this.apperClient.updateRecord('room_c', {
+        records: [{
+          Id: parseInt(roomId),
+          status_c: 'Cleaning',
+          last_updated_c: new Date().toISOString()
+        }]
+      });
 
-    const room = this.rooms[roomIndex];
-    if (room.status !== 'Occupied') {
-      throw new Error(`Room ${room.roomNumber} is not currently occupied`);
-    }
+      if (!response.success) {
+        throw new Error(response.message);
+      }
 
-    this.rooms[roomIndex] = {
-      ...room,
-      status: 'Cleaning',
-      lastUpdated: new Date().toISOString(),
-      statusHistory: [
-        ...room.statusHistory,
-        {
-          status: 'Cleaning',
-          timestamp: new Date().toISOString(),
-          changedFrom: 'Occupied',
-          changedBy: 'Current User',
-          note: 'Guest checkout completed'
-        }
-      ]
-    };
-
-return { ...this.rooms[roomIndex] };
-  }
-
-  async bulkUpdateStatus(roomIds, newStatus) {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
-    roomIds.forEach(roomId => {
-      const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(roomId));
-      if (roomIndex !== -1) {
-        const room = this.rooms[roomIndex];
-        const oldStatus = room.status;
-        
-        this.rooms[roomIndex] = {
-          ...room,
-          status: newStatus,
-          lastUpdated: new Date().toISOString(),
-          statusHistory: [
-            ...room.statusHistory,
-            {
-              status: newStatus,
-              timestamp: new Date().toISOString(),
-              changedFrom: oldStatus,
-              changedBy: 'Current User',
-              note: `Bulk status change`
-            }
-          ]
-        };
-
-        // Clear guest info if room becomes available
-        if (newStatus === 'Available') {
-          this.rooms[roomIndex].guestName = null;
-          this.rooms[roomIndex].checkoutTime = null;
-          this.rooms[roomIndex].checkinTime = null;
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        if (successful.length > 0) {
+          return successful[0].data;
         }
       }
-    });
-
-    return this.rooms.filter(room => roomIds.includes(room.Id.toString()));
-  }
-
-  async bulkBlockRooms(roomIds, reason) {
-    await new Promise(resolve => setTimeout(resolve, 600));
-    
-    roomIds.forEach(roomId => {
-      const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(roomId));
-      if (roomIndex !== -1) {
-        const room = this.rooms[roomIndex];
-        
-        this.rooms[roomIndex] = {
-          ...room,
-          status: 'Out of Order',
-          blocked: true,
-          blockReason: reason,
-          lastUpdated: new Date().toISOString(),
-          statusHistory: [
-            ...room.statusHistory,
-            {
-              status: 'Out of Order',
-              timestamp: new Date().toISOString(),
-              changedFrom: room.status,
-              changedBy: 'Current User',
-              note: `Room blocked - ${reason}`
-            }
-          ]
-        };
-      }
-    });
-
-    return this.rooms.filter(room => roomIds.includes(room.Id.toString()));
+    } catch (error) {
+      console.error('Failed to checkout guest:', error);
+      throw error;
+    }
   }
 
   async blockRoom(roomId, reason) {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(roomId));
-    if (roomIndex === -1) {
-      throw new Error(`Room with ID ${roomId} not found`);
-    }
+    try {
+      const response = await this.apperClient.updateRecord('room_c', {
+        records: [{
+          Id: parseInt(roomId),
+          status_c: 'Out of Order',
+          blocked_c: true,
+          block_reason_c: reason,
+          last_updated_c: new Date().toISOString()
+        }]
+      });
 
-    const room = this.rooms[roomIndex];
-    
-    this.rooms[roomIndex] = {
-      ...room,
-      status: 'Out of Order',
-      blocked: true,
-      blockReason: reason,
-      lastUpdated: new Date().toISOString(),
-      statusHistory: [
-        ...room.statusHistory,
-        {
-          status: 'Out of Order',
-          timestamp: new Date().toISOString(),
-          changedFrom: room.status,
-          changedBy: 'Current User',
-          note: `Room blocked - ${reason}`
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        if (successful.length > 0) {
+          return successful[0].data;
         }
-      ]
-    };
-
-    return { ...this.rooms[roomIndex] };
+      }
+    } catch (error) {
+      console.error('Failed to block room:', error);
+      throw error;
+    }
   }
 
   async unblockRoom(roomId) {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(roomId));
-    if (roomIndex === -1) {
-      throw new Error(`Room with ID ${roomId} not found`);
-    }
+    try {
+      const response = await this.apperClient.updateRecord('room_c', {
+        records: [{
+          Id: parseInt(roomId),
+          status_c: 'Available',
+          blocked_c: false,
+          block_reason_c: '',
+          last_updated_c: new Date().toISOString()
+        }]
+      });
 
-    const room = this.rooms[roomIndex];
-    
-    this.rooms[roomIndex] = {
-      ...room,
-      status: 'Available',
-      blocked: false,
-      blockReason: null,
-      lastUpdated: new Date().toISOString(),
-      statusHistory: [
-        ...room.statusHistory,
-        {
-          status: 'Available',
-          timestamp: new Date().toISOString(),
-          changedFrom: room.status,
-          changedBy: 'Current User',
-          note: 'Room unblocked and made available'
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        if (successful.length > 0) {
+          return successful[0].data;
         }
-      ]
-    };
-
-    return { ...this.rooms[roomIndex] };
+      }
+    } catch (error) {
+      console.error('Failed to unblock room:', error);
+      throw error;
+    }
   }
 
-async addNote(roomId, noteContent) {
-    await new Promise(resolve => setTimeout(resolve, 400));
-    
-    const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(roomId));
-    if (roomIndex === -1) {
-      throw new Error(`Room with ID ${roomId} not found`);
+  async bulkUpdateStatus(roomIds, newStatus) {
+    try {
+      const records = roomIds.map(roomId => ({
+        Id: parseInt(roomId),
+        status_c: newStatus,
+        last_updated_c: new Date().toISOString(),
+        guest_name_c: newStatus === 'Available' ? '' : undefined,
+        checkin_time_c: newStatus === 'Available' ? null : undefined,
+        checkout_time_c: newStatus === 'Available' ? null : undefined
+      }));
+
+      const response = await this.apperClient.updateRecord('room_c', {
+        records
+      });
+
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} rooms:`, failed);
+        }
+        
+        return successful.map(r => r.data);
+      }
+    } catch (error) {
+      console.error('Failed to bulk update rooms:', error);
+      throw error;
     }
-
-    const room = this.rooms[roomIndex];
-    const newNote = {
-      id: Date.now(),
-      content: noteContent,
-      timestamp: new Date().toISOString(),
-      addedBy: 'Current User',
-      type: 'General'
-    };
-
-    this.rooms[roomIndex] = {
-      ...room,
-      notes: [...(room.notes || []), newNote],
-      lastUpdated: new Date().toISOString()
-    };
-
-    return { ...this.rooms[roomIndex] };
   }
 
-  async deleteNote(roomId, noteId) {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    const roomIndex = this.rooms.findIndex(r => r.Id === parseInt(roomId));
-    if (roomIndex === -1) {
-      throw new Error(`Room with ID ${roomId} not found`);
+  async bulkBlockRooms(roomIds, reason) {
+    try {
+      const records = roomIds.map(roomId => ({
+        Id: parseInt(roomId),
+        status_c: 'Out of Order',
+        blocked_c: true,
+        block_reason_c: reason,
+        last_updated_c: new Date().toISOString()
+      }));
+
+      const response = await this.apperClient.updateRecord('room_c', {
+        records
+      });
+
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to block ${failed.length} rooms:`, failed);
+        }
+        
+        return successful.map(r => r.data);
+      }
+    } catch (error) {
+      console.error('Failed to bulk block rooms:', error);
+      throw error;
     }
-
-    const room = this.rooms[roomIndex];
-    
-    this.rooms[roomIndex] = {
-      ...room,
-      notes: (room.notes || []).filter(note => note.id !== noteId),
-      lastUpdated: new Date().toISOString()
-    };
-
-    return { ...this.rooms[roomIndex] };
   }
 
-  async searchRooms(query) {
-    await new Promise(resolve => setTimeout(resolve, 200));
-    
-    if (!query || query.trim() === '') {
-      return [...this.rooms];
-    }
+  async addNote(roomId, noteContent) {
+    try {
+      // Get current room to append note
+      const currentRoom = await this.getById(roomId);
+      const newNote = {
+        id: Date.now(),
+        content: noteContent,
+        timestamp: new Date().toISOString(),
+        addedBy: 'Current User',
+        type: 'General'
+      };
+      
+      const updatedNotes = [...(currentRoom.notes || []), newNote];
 
-    const searchTerm = query.toLowerCase().trim();
-    
-    return this.rooms.filter(room => 
-      room.roomNumber.toString().toLowerCase().includes(searchTerm) ||
-      (room.guestName && room.guestName.toLowerCase().includes(searchTerm)) ||
-      (room.bookingId && room.bookingId.toString().toLowerCase().includes(searchTerm))
-    );
+      const response = await this.apperClient.updateRecord('room_c', {
+        records: [{
+          Id: parseInt(roomId),
+          notes_c: JSON.stringify(updatedNotes),
+          last_updated_c: new Date().toISOString()
+        }]
+      });
+
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        if (successful.length > 0) {
+          return successful[0].data;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to add note:', error);
+      throw error;
+    }
   }
 }
 
