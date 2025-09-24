@@ -8,8 +8,10 @@ import { format } from "date-fns";
 const ReceiptModal = ({ isOpen, onClose, payment, onGenerateInvoice }) => {
   if (!isOpen || !payment) return null;
 
-  const formatDate = (dateString) => {
-    return format(new Date(dateString), 'MMM dd, yyyy HH:mm');
+const formatDate = (dateString) => {
+    if (!dateString) return 'Unknown Date';
+    const date = new Date(dateString);
+    return !isNaN(date) ? format(date, 'MMM dd, yyyy HH:mm') : 'Invalid Date';
   };
 
   const getStatusBadgeVariant = (status) => {

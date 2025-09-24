@@ -16,7 +16,10 @@ const RefreshIndicator = ({ lastUpdated, isRefreshing = false, autoRefresh = tru
           )}
         />
         <span className="text-xs">
-          Last updated: {format(lastUpdated, "h:mm:ss a")}
+Last updated: {lastUpdated && !isNaN(new Date(lastUpdated)) 
+            ? format(new Date(lastUpdated), "h:mm:ss a")
+            : 'Unknown'
+          }
         </span>
       </div>
       

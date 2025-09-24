@@ -67,8 +67,8 @@ const NotificationItem = ({ notification, onDismiss }) => {
             </div>
           </div>
           
-          <p className="text-xs text-secondary mt-1">
-{notification.timestamp && !isNaN(new Date(notification.timestamp))
+<p className="text-xs text-secondary mt-1">
+            {notification.timestamp && !isNaN(new Date(notification.timestamp))
               ? format(new Date(notification.timestamp), "MMM dd, yyyy 'at' h:mm a")
               : 'Just now'
             }

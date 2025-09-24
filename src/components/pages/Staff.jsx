@@ -66,8 +66,11 @@ const Staff = () => {
     return colors[status] || colors.available;
   };
 
-  const formatWeekRange = (date) => {
+const formatWeekRange = (date) => {
+    if (!date) return 'Invalid Date Range';
     const start = new Date(date);
+    if (isNaN(start)) return 'Invalid Date Range';
+    
     start.setDate(start.getDate() - start.getDay());
     const end = new Date(start);
     end.setDate(start.getDate() + 6);

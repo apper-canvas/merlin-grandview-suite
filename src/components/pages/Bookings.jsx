@@ -289,7 +289,7 @@ totalAmount: selectedRoom.total,
   };
 
 const formatDate = (dateString) => {
-    if (!dateString) return 'Invalid Date';
+    if (!dateString) return 'Unknown Date';
     const date = new Date(dateString);
     return !isNaN(date) ? date.toLocaleDateString() : 'Invalid Date';
   };

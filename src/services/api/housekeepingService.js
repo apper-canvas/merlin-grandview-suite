@@ -75,7 +75,9 @@ class HousekeepingService {
     } else if (newStatus === 'completed') {
       updatedTask.completedTime = now;
       if (task.startTime) {
-        const startTime = new Date(task.startTime);
+const startTime = task.startTime && !isNaN(new Date(task.startTime)) 
+          ? new Date(task.startTime) 
+          : new Date();
         const completedTime = new Date(now);
         updatedTask.actualTime = Math.round((completedTime - startTime) / 60000); // minutes
       }

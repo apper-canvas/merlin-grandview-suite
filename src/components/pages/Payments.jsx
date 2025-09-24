@@ -70,7 +70,7 @@ const Payments = () => {
   };
 
 const formatDate = (dateString) => {
-    if (!dateString) return 'Invalid Date';
+    if (!dateString) return 'Unknown Date';
     const date = new Date(dateString);
     return !isNaN(date) ? format(date, 'MMM dd, yyyy HH:mm') : 'Invalid Date';
   };

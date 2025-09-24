@@ -75,8 +75,10 @@ const RevenueChart = ({ chartData, isLoading }) => {
   
   const series = [{
     name: "Revenue",
-    data: currentData.data.map(item => ({
-      x: new Date(item.date).getTime(),
+data: currentData.data.map(item => ({
+      x: item.date && !isNaN(new Date(item.date)) 
+        ? new Date(item.date).getTime() 
+        : Date.now(),
       y: item.value
     }))
   }];

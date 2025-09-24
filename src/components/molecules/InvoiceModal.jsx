@@ -7,8 +7,10 @@ import { format } from "date-fns";
 const InvoiceModal = ({ isOpen, onClose, payment }) => {
   if (!isOpen || !payment) return null;
 
-  const formatDate = (dateString) => {
-    return format(new Date(dateString), 'MMMM dd, yyyy');
+const formatDate = (dateString) => {
+    if (!dateString) return 'Unknown Date';
+    const date = new Date(dateString);
+    return !isNaN(date) ? format(date, 'MMMM dd, yyyy') : 'Invalid Date';
   };
 
   const invoiceNumber = `INV-${payment.transactionId.split('_').pop()}`;
