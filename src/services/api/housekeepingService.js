@@ -1,4 +1,6 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
+import Error from "@/components/ui/Error";
 
 class HousekeepingService {
   constructor() {
@@ -395,6 +397,84 @@ class HousekeepingService {
     } catch (error) {
       console.error('Failed to delete task:', error);
       toast.error('Failed to delete task');
+throw error;
+    }
+  }
+
+  async bulkAssignTasks(assignments) {
+    try {
+      const allTasks = [];
+      
+      for (const assignment of assignments) {
+        const { roomIds, staffId, specialInstructions, supplies, priority } = assignment;
+        
+        // First get staff name
+        const staffResponse = await this.apperClient.getRecordById('staff_c', staffId, {
+          fields: [{"field": {"Name": "name_c"}}]
+        });
+
+        let staffName = 'Unknown';
+        if (staffResponse.success && staffResponse.data) {
+          staffName = staffResponse.data.name_c;
+        }
+
+        // Create tasks for each room
+        for (const roomId of roomIds) {
+          // Get room number for task naming
+          const roomResponse = await this.apperClient.getRecordById('room_c', roomId, {
+            fields: [{"field": {"Name": "room_number_c"}}]
+          });
+
+          let roomNumber = 'Unknown';
+          if (roomResponse.success && roomResponse.data) {
+            roomNumber = roomResponse.data.room_number_c;
+          }
+
+          allTasks.push({
+            Name: `Cleaning Task for Room ${roomNumber}`,
+            room_number_c: roomNumber,
+            room_id_c: parseInt(roomId),
+            assigned_to_c: parseInt(staffId),
+            assigned_staff_c: staffName,
+            status_c: 'pending',
+            priority_c: priority || 'medium',
+            estimated_time_c: 30,
+            task_type_c: 'standard_cleaning',
+            special_instructions_c: specialInstructions || '',
+            supplies_c: Array.isArray(supplies) ? supplies.join(',') : 'standard cleaning kit',
+            created_at_c: new Date().toISOString(),
+            created_by_c: 'Current User'
+          });
+        }
+      }
+
+      const response = await this.apperClient.createRecord('housekeeping_task_c', {
+        records: allTasks
+      });
+
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} tasks:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        if (successful.length > 0) {
+          toast.success(`${successful.length} tasks assigned successfully`);
+          return successful.map(r => r.data);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to bulk assign tasks:', error);
+      toast.error('Failed to assign tasks');
       throw error;
     }
   }
