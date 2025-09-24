@@ -641,12 +641,12 @@ const filteredRooms = rooms.filter(room => {
                         >
                           {status}
 </button>
-                      ))}
+))}
                     </div>
-)}
+                  )}
                   
                   <p className="text-xs text-slate-400 mt-2">
-Updated: {room.lastUpdated && !isNaN(new Date(room.lastUpdated))
+                    Updated: {room.lastUpdated && !isNaN(new Date(room.lastUpdated))
                       ? new Date(room.lastUpdated).toLocaleTimeString()
                       : 'Unknown'
                     }
