@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "label": "Occupancy Rate",
+    "value": 85.2,
+    "unit": "%",
+    "trend": "up",
+    "change": 2.3,
+    "icon": "Home"
+  },
+  {
+    "id": 2,
+    "label": "Available Rooms",
+    "value": 42,
+    "unit": "rooms",
+    "trend": "down",
+    "change": -5,
+    "icon": "Key"
+  },
+  {
+    "id": 3,
+    "label": "Daily Revenue",
+    "value": 28750,
+    "unit": "$",
+    "trend": "up",
+    "change": 8.7,
+    "icon": "DollarSign"
+  },
+  {
+    "id": 4,
+    "label": "Guest Satisfaction",
+    "value": 4.6,
+    "unit": "rating",
+    "trend": "up",
+    "change": 0.2,
+    "icon": "Star"
+  },
+  {
+    "id": 5,
+    "label": "Average Stay",
+    "value": 3.2,
+    "unit": "days",
+    "trend": "stable",
+    "change": 0.1,
+    "icon": "Calendar"
+  },
+  {
+    "id": 6,
+    "label": "Staff Performance",
+    "value": 92.5,
+    "unit": "%",
+    "trend": "up",
+    "change": 1.8,
+    "icon": "Users"
+  },
+  {
+    "id": 7,
+    "label": "Maintenance Requests",
+    "value": 8,
+    "unit": "pending",
+    "trend": "down",
+    "change": -3,
+    "icon": "Wrench"
+  },
+  {
+    "id": 8,
+    "label": "Booking Conversion",
+    "value": 76.8,
+    "unit": "%",
+    "trend": "up",
+    "change": 4.2,
+    "icon": "TrendingUp"
+  },
+  {
+    "id": 9,
+    "label": "Energy Efficiency",
+    "value": 88.1,
+    "unit": "%",
+    "trend": "up",
+    "change": 2.5,
+    "icon": "Zap"
+  },
+  {
+    "id": 10,
+    "label": "Total Bookings",
+    "value": 156,
+    "unit": "today",
+    "trend": "up",
+    "change": 12,
+    "icon": "Calendar"
+  },
+  {
+    "id": 11,
+    "label": "Revenue per Room",
+    "value": 145.25,
+    "unit": "$",
+    "trend": "up",
+    "change": 6.8,
+    "icon": "Building"
+  },
+  {
+    "id": 12,
+    "label": "Check-in Time",
+    "value": 12.5,
+    "unit": "min avg",
+    "trend": "down",
+    "change": -2.1,
+    "icon": "Clock"
+  }
+]
