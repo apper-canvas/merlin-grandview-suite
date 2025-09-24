@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Card, CardContent, CardHeader } from "@/components/atoms/Card";
 import { toast } from "react-toastify";
 import paymentService from "@/services/api/paymentService";
@@ -11,7 +12,17 @@ import Dashboard from "@/components/pages/Dashboard";
 import Rooms from "@/components/pages/Rooms";
 
 const Bookings = () => {
-const [activeTab, setActiveTab] = useState('search');
+  // Get authenticated user from Redux store
+  const { user } = useSelector((state) => state.user);
+  
+  // Check if user email domain is companyhub.com
+  const isCompanyHubUser = () => {
+    if (!user || !user.emailAddress) return false;
+    const emailDomain = user.emailAddress.split('@')[1];
+    return emailDomain === 'companyhub.com';
+  };
+
+  const [activeTab, setActiveTab] = useState('search');
   const [loading, setLoading] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState({
     checkIn: '',
@@ -46,7 +57,6 @@ const [activeTab, setActiveTab] = useState('search');
     key: 'Id',
     direction: 'asc'
   });
-
   // Load bookings when manage tab is active
   useEffect(() => {
     if (activeTab === 'manage') {
@@ -322,11 +332,11 @@ switch (status) {
 
       {/* Tab Navigation */}
       <Card>
-        <CardHeader>
+<CardHeader>
           <div className="flex space-x-1 bg-slate-100 p-1 rounded-lg">
             <button
               onClick={() => setActiveTab('search')}
-              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`${isCompanyHubUser() ? 'flex-1' : 'w-full'} px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'search'
                   ? 'bg-white text-primary shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
@@ -335,17 +345,19 @@ switch (status) {
               <ApperIcon name="Search" className="h-4 w-4 mr-2 inline" />
               Search & Book
             </button>
-            <button
-              onClick={() => setActiveTab('manage')}
-              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                activeTab === 'manage'
-                  ? 'bg-white text-primary shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <ApperIcon name="Calendar" className="h-4 w-4 mr-2 inline" />
-              Manage Reservations
-            </button>
+            {isCompanyHubUser() && (
+              <button
+                onClick={() => setActiveTab('manage')}
+                className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeTab === 'manage'
+                    ? 'bg-white text-primary shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <ApperIcon name="Calendar" className="h-4 w-4 mr-2 inline" />
+                Manage Reservations
+              </button>
+            )}
           </div>
         </CardHeader>
       </Card>
