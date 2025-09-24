@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "type": "booking",
+    "message": "New booking received for Presidential Suite from Sarah Johnson",
+    "timestamp": "2024-01-25T14:30:00Z",
+    "severity": "info"
+  },
+  {
+    "id": 2,
+    "type": "payment",
+    "message": "Payment of $2,450.00 processed successfully for Room 302",
+    "timestamp": "2024-01-25T13:45:00Z",
+    "severity": "success"
+  },
+  {
+    "id": 3,
+    "type": "maintenance",
+    "message": "Urgent: Air conditioning repair required in Room 405",
+    "timestamp": "2024-01-25T13:20:00Z",
+    "severity": "warning"
+  },
+  {
+    "id": 4,
+    "type": "housekeeping",
+    "message": "Room 201 cleaning completed by Maria Santos",
+    "timestamp": "2024-01-25T12:55:00Z",
+    "severity": "success"
+  },
+  {
+    "id": 5,
+    "type": "booking",
+    "message": "Check-out completed for Room 103 - Guest: Michael Chen",
+    "timestamp": "2024-01-25T11:30:00Z",
+    "severity": "info"
+  },
+  {
+    "id": 6,
+    "type": "system",
+    "message": "Daily backup completed successfully",
+    "timestamp": "2024-01-25T10:00:00Z",
+    "severity": "success"
+  },
+  {
+    "id": 7,
+    "type": "maintenance",
+    "message": "Elevator maintenance scheduled for tomorrow 9:00 AM",
+    "timestamp": "2024-01-25T09:15:00Z",
+    "severity": "info"
+  },
+  {
+    "id": 8,
+    "type": "staff",
+    "message": "New staff member John Wilson added to housekeeping team",
+    "timestamp": "2024-01-25T08:45:00Z",
+    "severity": "info"
+  },
+  {
+    "id": 9,
+    "type": "payment",
+    "message": "Payment failed for Room 507 - Credit card declined",
+    "timestamp": "2024-01-25T08:20:00Z",
+    "severity": "error"
+  },
+  {
+    "id": 10,
+    "type": "booking",
+    "message": "Booking cancelled for Room 204 - Refund processed",
+    "timestamp": "2024-01-24T22:30:00Z",
+    "severity": "warning"
+  },
+  {
+    "id": 11,
+    "type": "housekeeping",
+    "message": "Supply inventory low: Towels and linens need restocking",
+    "timestamp": "2024-01-24T21:45:00Z",
+    "severity": "warning"
+  },
+  {
+    "id": 12,
+    "type": "booking",
+    "message": "VIP guest checked in to Penthouse Suite - James Parker",
+    "timestamp": "2024-01-24T20:15:00Z",
+    "severity": "info"
+  },
+  {
+    "id": 13,
+    "type": "maintenance",
+    "message": "Pool heating system maintenance completed",
+    "timestamp": "2024-01-24T18:30:00Z",
+    "severity": "success"
+  },
+  {
+    "id": 14,
+    "type": "system",
+    "message": "Security system update installed and tested",
+    "timestamp": "2024-01-24T16:00:00Z",
+    "severity": "success"
+  },
+  {
+    "id": 15,
+    "type": "staff",
+    "message": "Training session completed for front desk team",
+    "timestamp": "2024-01-24T14:30:00Z",
+    "severity": "info"
+  }
+]
