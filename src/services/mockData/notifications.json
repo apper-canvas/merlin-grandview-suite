@@ -1,0 +1,137 @@
+[
+  {
+    "Id": 1,
+    "type": "booking",
+    "priority": "high",
+    "title": "New Booking Received",
+    "message": "Room 305 booked for Feb 15-18, 2024 by Sarah Johnson",
+    "timestamp": "2024-01-15T14:30:00Z",
+    "read": false
+  },
+  {
+    "Id": 2,
+    "type": "maintenance",
+    "priority": "urgent",
+    "title": "Maintenance Request",
+    "message": "Air conditioning malfunction reported in Room 201",
+    "timestamp": "2024-01-15T13:45:00Z",
+    "read": false
+  },
+  {
+    "Id": 3,
+    "type": "payment",
+    "priority": "medium",
+    "title": "Payment Confirmation",
+    "message": "Payment of $450.00 received for Booking #1234",
+    "timestamp": "2024-01-15T12:20:00Z",
+    "read": true
+  },
+  {
+    "Id": 4,
+    "type": "housekeeping",
+    "priority": "medium",
+    "title": "Housekeeping Complete",
+    "message": "Room 412 cleaning completed and ready for next guest",
+    "timestamp": "2024-01-15T11:15:00Z",
+    "read": true
+  },
+  {
+    "Id": 5,
+    "type": "booking",
+    "priority": "medium",
+    "title": "Check-in Reminder",
+    "message": "Guest Michael Davis checking in today at 3:00 PM - Room 508",
+    "timestamp": "2024-01-15T10:30:00Z",
+    "read": false
+  },
+  {
+    "Id": 6,
+    "type": "maintenance",
+    "priority": "low",
+    "title": "Scheduled Maintenance",
+    "message": "Weekly elevator inspection completed successfully",
+    "timestamp": "2024-01-15T09:00:00Z",
+    "read": true
+  },
+  {
+    "Id": 7,
+    "type": "system",
+    "priority": "high",
+    "title": "System Update",
+    "message": "Hotel management system will undergo maintenance tonight at 2:00 AM",
+    "timestamp": "2024-01-15T08:45:00Z",
+    "read": false
+  },
+  {
+    "Id": 8,
+    "type": "booking",
+    "priority": "medium",
+    "title": "Cancellation Notice",
+    "message": "Booking #5678 for Room 203 has been cancelled by guest",
+    "timestamp": "2024-01-14T18:20:00Z",
+    "read": true
+  },
+  {
+    "Id": 9,
+    "type": "payment",
+    "priority": "urgent",
+    "title": "Payment Overdue",
+    "message": "Payment for Booking #3456 is 2 days overdue - $320.00",
+    "timestamp": "2024-01-14T16:30:00Z",
+    "read": false
+  },
+  {
+    "Id": 10,
+    "type": "housekeeping",
+    "priority": "high",
+    "title": "Special Request",
+    "message": "VIP guest in Room 801 requested extra towels and late checkout",
+    "timestamp": "2024-01-14T15:10:00Z",
+    "read": true
+  },
+  {
+    "Id": 11,
+    "type": "maintenance",
+    "priority": "medium",
+    "title": "Equipment Status",
+    "message": "Pool heating system maintenance scheduled for tomorrow morning",
+    "timestamp": "2024-01-14T14:25:00Z",
+    "read": true
+  },
+  {
+    "Id": 12,
+    "type": "booking",
+    "priority": "low",
+    "title": "Booking Confirmed",
+    "message": "Corporate booking for 5 rooms confirmed for next month",
+    "timestamp": "2024-01-14T13:40:00Z",
+    "read": true
+  },
+  {
+    "Id": 13,
+    "type": "system",
+    "priority": "medium",
+    "title": "Backup Complete",
+    "message": "Daily data backup completed successfully at 3:00 AM",
+    "timestamp": "2024-01-14T12:05:00Z",
+    "read": true
+  },
+  {
+    "Id": 14,
+    "type": "payment",
+    "priority": "medium",
+    "title": "Refund Processed",
+    "message": "Refund of $125.00 processed for cancelled Booking #7890",
+    "timestamp": "2024-01-14T11:30:00Z",
+    "read": true
+  },
+  {
+    "Id": 15,
+    "type": "housekeeping",
+    "priority": "low",
+    "title": "Inventory Alert",
+    "message": "Housekeeping supplies running low - toiletries need restocking",
+    "timestamp": "2024-01-14T10:15:00Z",
+    "read": true
+  }
+]
