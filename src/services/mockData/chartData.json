@@ -1,0 +1,82 @@
+{
+  "daily": {
+    "data": [
+      { "date": "2024-01-01", "value": 3200, "label": "Jan 1" },
+      { "date": "2024-01-02", "value": 2800, "label": "Jan 2" },
+      { "date": "2024-01-03", "value": 3100, "label": "Jan 3" },
+      { "date": "2024-01-04", "value": 2950, "label": "Jan 4" },
+      { "date": "2024-01-05", "value": 4200, "label": "Jan 5" },
+      { "date": "2024-01-06", "value": 4800, "label": "Jan 6" },
+      { "date": "2024-01-07", "value": 3900, "label": "Jan 7" },
+      { "date": "2024-01-08", "value": 3400, "label": "Jan 8" },
+      { "date": "2024-01-09", "value": 2700, "label": "Jan 9" },
+      { "date": "2024-01-10", "value": 3300, "label": "Jan 10" },
+      { "date": "2024-01-11", "value": 3600, "label": "Jan 11" },
+      { "date": "2024-01-12", "value": 5100, "label": "Jan 12" },
+      { "date": "2024-01-13", "value": 5400, "label": "Jan 13" },
+      { "date": "2024-01-14", "value": 4300, "label": "Jan 14" },
+      { "date": "2024-01-15", "value": 3800, "label": "Jan 15" },
+      { "date": "2024-01-16", "value": 2900, "label": "Jan 16" },
+      { "date": "2024-01-17", "value": 3200, "label": "Jan 17" },
+      { "date": "2024-01-18", "value": 3700, "label": "Jan 18" },
+      { "date": "2024-01-19", "value": 4900, "label": "Jan 19" },
+      { "date": "2024-01-20", "value": 5200, "label": "Jan 20" },
+      { "date": "2024-01-21", "value": 4400, "label": "Jan 21" },
+      { "date": "2024-01-22", "value": 3900, "label": "Jan 22" },
+      { "date": "2024-01-23", "value": 3100, "label": "Jan 23" },
+      { "date": "2024-01-24", "value": 3500, "label": "Jan 24" },
+      { "date": "2024-01-25", "value": 3800, "label": "Jan 25" },
+      { "date": "2024-01-26", "value": 5600, "label": "Jan 26" },
+      { "date": "2024-01-27", "value": 6200, "label": "Jan 27" },
+      { "date": "2024-01-28", "value": 4700, "label": "Jan 28" },
+      { "date": "2024-01-29", "value": 4100, "label": "Jan 29" },
+      { "date": "2024-01-30", "value": 3600, "label": "Jan 30" }
+    ],
+    "total": 115200,
+    "period": "Last 30 Days",
+    "currency": "USD"
+  },
+  "weekly": {
+    "data": [
+      { "week": "2023-10-02", "value": 24500, "label": "Week 40" },
+      { "week": "2023-10-09", "value": 26800, "label": "Week 41" },
+      { "week": "2023-10-16", "value": 23200, "label": "Week 42" },
+      { "week": "2023-10-23", "value": 25600, "label": "Week 43" },
+      { "week": "2023-10-30", "value": 28900, "label": "Week 44" },
+      { "week": "2023-11-06", "value": 27400, "label": "Week 45" },
+      { "week": "2023-11-13", "value": 26100, "label": "Week 46" },
+      { "week": "2023-11-20", "value": 29800, "label": "Week 47" },
+      { "week": "2023-11-27", "value": 31200, "label": "Week 48" },
+      { "week": "2023-12-04", "value": 28700, "label": "Week 49" },
+      { "week": "2023-12-11", "value": 30500, "label": "Week 50" },
+      { "week": "2023-12-18", "value": 33400, "label": "Week 51" }
+    ],
+    "total": 336100,
+    "period": "Last 12 Weeks",
+    "currency": "USD"
+  },
+  "monthly": {
+    "data": [
+      { "month": "2023-01", "value": 89400, "label": "Jan 2023" },
+      { "month": "2023-02", "value": 82100, "label": "Feb 2023" },
+      { "month": "2023-03", "value": 95600, "label": "Mar 2023" },
+      { "month": "2023-04", "value": 91800, "label": "Apr 2023" },
+      { "month": "2023-05", "value": 103200, "label": "May 2023" },
+      { "month": "2023-06", "value": 118700, "label": "Jun 2023" },
+      { "month": "2023-07", "value": 126400, "label": "Jul 2023" },
+      { "month": "2023-08", "value": 124300, "label": "Aug 2023" },
+      { "month": "2023-09", "value": 108900, "label": "Sep 2023" },
+      { "month": "2023-10", "value": 97200, "label": "Oct 2023" },
+      { "month": "2023-11", "value": 88600, "label": "Nov 2023" },
+      { "month": "2023-12", "value": 105800, "label": "Dec 2023" }
+    ],
+    "total": 1232000,
+    "period": "Last 12 Months",
+    "currency": "USD"
+  },
+  "metadata": {
+    "lastUpdated": "2024-01-30T10:30:00Z",
+    "source": "Hotel Management System",
+    "type": "revenue"
+  }
+}
